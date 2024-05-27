@@ -1,6 +1,4 @@
-import { getManifest } from "./index.js";
-
-const manifestUri = getManifest();
+const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
 
 function initApp() {
     // Install built-in polyfills to patch browser incompatibilities.
@@ -59,12 +57,14 @@ function handleEnter() {
   }
 }
 
-// function handleBack() {
-//     console.log('### back pressed');
-// }
+function handleBack() {
+    if (document.getElementById("shaka-version")) {
+        document.getElementById("shaka-version").innerHTML = shaka.Player.version
+    }
+}
 
 document.addEventListener('DOMContentLoaded', initApp);
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') handleEnter()
-    // if (event.key === 'Backspace' || event.keyCode === 8) handleBack()
+    if (event.key === 'Backspace' || event.keyCode === 8) handleBack()
 });
