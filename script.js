@@ -1,4 +1,6 @@
-const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+const manifestUri =
+    'https://storage.googleapis.com/shaka-demo-assets/sintel-widevine/dash.mpd';
+const licenseServer = 'https://cwip-shaka-proxy.appspot.com/no_auth';
 
 function initApp() {
     // Install built-in polyfills to patch browser incompatibilities.
@@ -26,6 +28,11 @@ async function initPlayer() {
 
     // Listen for error events.
     player.addEventListener('error', onErrorEvent);
+    player.configure({
+        drm: {
+          servers: { 'com.widevine.alpha': licenseServer }
+        }
+    });
 
     // Try to load a manifest.
     // This is an asynchronous process.
@@ -33,6 +40,7 @@ async function initPlayer() {
         await player.load(manifestUri);
         // This runs if the asynchronous load is successful.
         console.log('The video has now been loaded!');
+        handleBack()
     } catch (e) {
         // onError is executed if the asynchronous load fails.
         onError(e);
@@ -66,5 +74,5 @@ function handleBack() {
 document.addEventListener('DOMContentLoaded', initApp);
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') handleEnter()
-    if (event.key === 'Backspace' || event.keyCode === 8) handleBack()
+    if (event.key === 'Backspace') handleBack()
 });
